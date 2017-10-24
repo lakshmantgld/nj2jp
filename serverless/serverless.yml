@@ -99,7 +99,14 @@ functions:
           response:
             headers:
               Access-Control-Allow-Origin: "'*'"
-
+            statusCodes:
+              500:
+                pattern: '.*errors.*'
+                template:
+                  application/json: >
+                    {
+                      "errors": "$util.parseJson($input.path('$.errorMessage')).errors"  
+                    }
   sagawa:
     handler: handler.sagawa
     memorySize: 1024
