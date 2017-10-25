@@ -6,19 +6,19 @@ import verifyDb from './db/mongo/connection';
 
 module.exports.graphql = (event, context, callback) => {
   console.log('\nEVENT: ', event);
-  // context.callbackWaitsForEmptyEventLoop = false;
+  context.callbackWaitsForEmptyEventLoop = false;
 
   verifyDb()
   .then(dbResults => runGraphQL({ event, ...dbResults }))
   .then((GraphQLResponse) => {
     console.log('\n//Final Lambda SUCCESS Response: ', GraphQLResponse);
-    context.succeed(GraphQLResponse) && context.done();
-    // callback(null, GraphQLResponse);
+    // context.succeed(GraphQLResponse) && context.done();
+    callback(null, GraphQLResponse);
   })
   .catch((error) => {
     console.log('\n//Final Lambda ERROR: ', error);
-    context.fail(JSON.stringify(error)) && context.done();
-    // callback(null, error);
+    // context.fail(JSON.stringify(error)) && context.done();
+    callback(JSON.stringify(error));
   });
 };
 

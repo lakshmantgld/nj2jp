@@ -104,9 +104,9 @@ functions:
                 pattern: '.*errors.*'
                 template:
                   application/json: >
-                    {
-                      "errors": "$util.parseJson($input.path('$.errorMessage')).errors"  
-                    }
+                    #set ($errorMessageObj = $input.path('$.errorMessage'))
+                    $errorMessageObj
+
   sagawa:
     handler: handler.sagawa
     memorySize: 1024
