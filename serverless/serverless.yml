@@ -99,6 +99,13 @@ functions:
           response:
             headers:
               Access-Control-Allow-Origin: "'*'"
+            statusCodes:
+              500:
+                pattern: '.*errors.*'
+                template:
+                  application/json: >
+                    #set ($errorMessageObj = $input.path('$.errorMessage'))
+                    $errorMessageObj
 
   sagawa:
     handler: handler.sagawa
