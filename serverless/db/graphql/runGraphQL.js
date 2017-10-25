@@ -9,12 +9,20 @@ new Promise((resolve, reject) => {
 
   graphql(schema, query, null, dbModels, variables)
   .then((dbResponse) => {
-    console.log(`
-    (runGraphQL.js @ graphql.then)
-    Results = ${JSON.stringify(dbResponse, null, 2)}
-    `);
-    // return closeDB(db, dbResponse);
-    resolve(dbResponse);
+    if (dbResponse.hasOwnProperty('errors')) {
+      console.log(`
+      (runGraphQL.js @ graphql.then)
+      Errors = ${JSON.stringify(dbResponse, null, 2)}
+      `);
+      reject(dbResponse);
+    } else {
+      console.log(`
+      (runGraphQL.js @ graphql.then)
+      Results = ${JSON.stringify(dbResponse, null, 2)}
+      `);
+      // return closeDB(db, dbResponse);
+      resolve(dbResponse);
+    }
   })
   .catch((error) => {
     console.log(`
